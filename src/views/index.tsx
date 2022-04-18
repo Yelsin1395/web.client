@@ -1,10 +1,10 @@
-import { connect } from 'react-redux';
 import { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { Navbar, Card, LoaderFullPage } from '../components';
 import { getAllClient } from '../store/reducers/client/client.action';
 import { ClientProxy } from '../proxies';
 
-const App = ({ clients, getAllClient }: any) => {
+const App = ({ clients, dispatch }: any) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -12,7 +12,7 @@ const App = ({ clients, getAllClient }: any) => {
       try {
         setIsLoading(true);
         const result = await ClientProxy.getListClients();
-        getAllClient(result);
+        dispatch(getAllClient(result));
       } catch (error) {
         console.error(error);
       } finally {
@@ -21,39 +21,31 @@ const App = ({ clients, getAllClient }: any) => {
     };
 
     fetch();
-  }, [getAllClient]);
+  }, [dispatch]);
 
   return isLoading ? (
     <LoaderFullPage />
   ) : (
-    clients.length && (
-      <Navbar>
-        {clients.map((c: any) => (
-          <div className="column is-4" key={c.id}>
-            <Card
-              image_url={c.image_url}
-              name={c.name}
-              surname={c.surname}
-              age={c.age}
-              date_of_birth={c.date_of_birth}
-            />
-          </div>
-        ))}
-      </Navbar>
-    )
+    <Navbar>
+      {clients.map((c: any) => (
+        <div className="column is-4" key={c.id}>
+          <Card
+            image_url={c.image_url}
+            name={c.name}
+            surname={c.surname}
+            age={c.age}
+            date_of_birth={c.date_of_birth}
+          />
+        </div>
+      ))}
+    </Navbar>
   );
 };
 
 const mapStateToProps = (state: any) => {
   return {
-    clients: state.client,
+    clients: state.clients,
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    getAllClient: (value: any) => dispatch(getAllClient(value)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);

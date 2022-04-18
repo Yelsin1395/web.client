@@ -1,5 +1,5 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
-import client from './client/client.reducer';
+import clients from './client/client.reducer';
 
-export default combineReducers({ client });
+export default combineReducers({ clients });

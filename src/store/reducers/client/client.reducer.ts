@@ -1,17 +1,19 @@
-import { CREATE_CLIENT, CLIENT_ALL_REQUEST } from './client.constant';
+import { CLIENT_ALL_REQUEST } from './client.constant';
 
-const initialState = {
-  image_url: null,
-  name: null,
-  surname: null,
-  date_of_birth: null,
-};
+export interface IClient {
+  id?: string;
+  image_url: string;
+  name: string;
+  surname: string;
+  age?: number;
+  date_of_birth: string;
+}
 
-function clientReducer(state: any = initialState, actions: any) {
+const initialState: IClient[] = [];
+
+function clientReducer(state: IClient[] = initialState, actions: any) {
   switch (actions.type) {
     case CLIENT_ALL_REQUEST:
-      return actions.payload;
-    case CREATE_CLIENT:
       return actions.payload;
     default:
       return state;
